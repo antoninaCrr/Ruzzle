@@ -14,8 +14,8 @@ import javafx.beans.property.StringProperty;
  *
  */
 public class Board {
-	private List<Pos> positions;
-	private Map<Pos, StringProperty> cells;
+	private List<Pos> positions; // pos è una classe creata appositamente per identificare un oggetto
+	private Map<Pos, StringProperty> cells; // StringProperty è una classe che wrappa una stringa
 
 	private int size;
 

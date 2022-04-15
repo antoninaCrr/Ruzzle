@@ -2,6 +2,7 @@ package it.polito.tdp.ruzzle;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -19,7 +20,7 @@ public class FXMLController {
 	private Model model ; 
 	
 	//corrispondenza bottoni dell'interfaccia grafica <-> caselle della Board 
-	private Map<Pos,Button> letters ;
+	private Map<Pos,Button> letters ; // le chiavi sono delle posizioni, mentre i values sono dei bottoni
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -90,6 +91,10 @@ public class FXMLController {
 
     @FXML
     void handleProva(ActionEvent event) {
+    	// pulisco l'interfaccia grafica
+    	for(Pos p: letters.keySet()) {
+    		letters.get(p).setDefaultButton(false); 
+    	}
     		
     	String parola = txtParola.getText() ;
     	if(parola.length() <= 1) {
@@ -104,16 +109,33 @@ public class FXMLController {
     	}
     	
     	//TODO
+    	
+    	List<Pos> posizioni = this.model.trovaParola(parola);
+    	if(posizioni != null) {
+    		for(Pos p : posizioni) {
+    			letters.get(p).setDefaultButton(true); // illumino la lettera corrispondente
+    		}
+    	}
+    	
     }
 
     @FXML
     void handleReset(ActionEvent event) {
+    	for(Pos p: letters.keySet()) {
+    		letters.get(p).setDefaultButton(false); 
+    	}
     	model.reset();
     }
     
     @FXML
     void handleRisolvi(ActionEvent event) {
     	//TODO
+    	this.txtResult.clear();
+    	List<String> tutte = this.model.trovaTutte();
+    	this.txtResult.appendText("Ho trovato "+ tutte.size()+" parole"+"\n");
+    	for(String s : tutte) {
+    		this.txtResult.appendText(s+"\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
